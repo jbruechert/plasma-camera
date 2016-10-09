@@ -43,116 +43,120 @@ import QtMultimedia 5.4
 import org.kde.plasma.core 2.0 as PlasmaCore
 
 FocusScope {
-    property Camera camera
-    property bool previewAvailable : false
+	property Camera camera
+	property bool previewAvailable : false
 
-    property int buttonsPanelWidth: buttonPaneShadow.width
+	property int buttonsPanelWidth: buttonPaneShadow.width
 
-    signal previewSelected
-    signal photoModeSelected
-    id : captureControls
+	signal previewSelected
+	signal photoModeSelected
+	id : captureControls
 
-    PlasmaCore.FrameSvgItem {
-        id: buttonPaneShadow
-        imagePath: "widgets/background"
-        enabledBorders: PlasmaCore.FrameSvgItem.RightBorder
-        width: bottomColumn.width + 16 + margins.right
-        height: parent.height
-        anchors.top: parent.top
-        x: menuShown ? 0 : -width
-        Behavior on x {
-            XAnimator {
-                duration: units.shortDuration
-                easing.type: Easing.InOutQuad
-            }
-        }
+	PlasmaCore.FrameSvgItem {
+		id: buttonPaneShadow
+		imagePath: "widgets/background"
+		enabledBorders: PlasmaCore.FrameSvgItem.RightBorder
+		width: bottomColumn.width + 16 + margins.right
+		height: parent.height
+		anchors.top: parent.top
+		x: menuShown ? 0 : -width
+		Behavior on x {
+			XAnimator {
+				duration: units.shortDuration
+				easing.type: Easing.InOutQuad
+			}
+		}
 
-        Column {
-            anchors {
-                left: parent.left
-                top: parent.top
-                margins: 8
-            }
+		Column {
+			anchors {
+				left: parent.left
+				top: parent.top
+				margins: 8
+			}
 
-            id: buttonsColumn
-            spacing: 8
+			id: buttonsColumn
+			spacing: 8
 
-            FocusButton {
-                camera: captureControls.camera
-                visible: camera.cameraStatus == Camera.ActiveStatus && camera.focus.isFocusModeSupported(Camera.FocusAuto)
-            }
+			FocusButton {
+				camera: captureControls.camera
+				visible: camera.cameraStatus == Camera.ActiveStatus && camera.focus.isFocusModeSupported(Camera.FocusAuto)
+			}
 
-            CameraButton {
-                text: "View"
-                onClicked: captureControls.previewSelected()
-                //don't show View button during recording
-                visible: camera.videoRecorder.actualLocation && !stopButton.visible
-            }
-        }
+			CameraButton {
+				text: "View"
+				onClicked: captureControls.previewSelected()
+				//don't show View button during recording
+				visible: camera.videoRecorder.actualLocation && !stopButton.visible
+			}
+		}
 
-        Column {
-            anchors {
-                bottom: parent.bottom
-                left: parent.left
-                margins: 8
-            }
+		Column {
+			anchors {
+				bottom: parent.bottom
+				left: parent.left
+				margins: 8
+			}
 
-            id: bottomColumn
-            spacing: 8
+			id: bottomColumn
+			spacing: 8
 
-            CameraListButton {
-                model: QtMultimedia.availableCameras
-                onValueChanged: captureControls.camera.deviceId = value
-            }
+			CameraListButton {
+				model: QtMultimedia.availableCameras
+				onValueChanged: captureControls.camera.deviceId = value
+			}
 
-            CameraButton {
-                id: switchButton
-                text: "Switch to Photo"
-                onClicked: captureControls.photoModeSelected()
-            }
+			CameraButton {
+				id: switchButton
+				text: "Switch to Photo"
+				onClicked: captureControls.photoModeSelected()
+			}
 
-            Item {
-                width: 1
-                height: switchButton.height
-            }
-        }
-    }
+			Item {
+				width: 1
+				height: switchButton.height
+			}
+		}
+	}
 
-    CameraButton {
-        anchors {
-            margins: 8
-            horizontalCenter: parent.horizontalCenter
-            bottom: parent.bottom
-        }
-        text: camera.videoRecorder.recorderStatus == CameraRecorder.RecordingStatus ? "Stop" : "Record"
-        onClicked: {
-            if (camera.videoRecorder.recorderStatus == CameraRecorder.RecordingStatus) {
-                camera.videoRecorder.stop();
-            } else {
-                camera.videoRecorder.record();
-            }
-        }
-    }
+	CameraButton {
+		anchors {
+			margins: 8
+			horizontalCenter: parent.horizontalCenter
+			bottom: parent.bottom
+		}
+		text: camera.videoRecorder.recorderStatus == CameraRecorder.RecordingStatus ? "Stop" : "Record"
+		iconName: "camera-photo.png"
+		onClicked: {
+			if (camera.videoRecorder.recorderStatus == CameraRecorder.RecordingStatus) {
+				camera.videoRecorder.stop();
+			} else {
+				camera.videoRecorder.record();
+			}
+		}
+	}
 
-    CameraButton {
-        z: 99
-        anchors {
-            margins: 8
-            left: parent.left
-            bottom: parent.bottom
-        }
-        text: "Menu"
-        onClicked: menuShown = !menuShown
-    }
+	CameraButton {
+		z: 99
+		anchors {
+			margins: 8
+			left: parent.left
+			bottom: parent.bottom
+		}
+		onClicked: menuShown = !menuShown
+		iconName: "menu_new.png"
+	}
 
-    ZoomControl {
-        x : 0
-        y : 0
-        width : 100
-        height: parent.height
-
-        currentZoom: camera.digitalZoom
-        maximumZoom: Math.min(4.0, camera.maximumDigitalZoom)
-        onZoomTo: camera.setDigitalZoom(value)
-    }
+	ZoomControl {
+		x : 0
+		y : 0
+		width : 100
+		height: parent.height
+		anchors {
+			right: parent.right
+		}
+		
+		currentZoom: camera.digitalZoom
+		maximumZoom: Math.min(4.0, camera.maximumDigitalZoom)
+		onZoomTo: camera.setDigitalZoom(value)
+	}
 }

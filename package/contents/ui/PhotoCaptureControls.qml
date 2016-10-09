@@ -43,146 +43,144 @@ import QtMultimedia 5.4
 import org.kde.plasma.core 2.0 as PlasmaCore
 
 FocusScope {
-    property Camera camera
-    property bool previewAvailable : false
+	property Camera camera
+	property bool previewAvailable : false
 
-    property int buttonsPanelWidth: buttonPaneShadow.width
+	property int buttonsPanelWidth: buttonPaneShadow.width
 
-    signal previewSelected
-    signal videoModeSelected
-    id : captureControls
+	signal previewSelected
+	signal videoModeSelected
+	id : captureControls
 
-    PlasmaCore.FrameSvgItem {
-        id: buttonPaneShadow
-        imagePath: "widgets/background"
-        enabledBorders: PlasmaCore.FrameSvgItem.RightBorder
-        width: bottomColumn.width + 16 + margins.right
-        height: parent.height
-        anchors.top: parent.top
-        x: menuShown ? 0 : -width
-        Behavior on x {
-            XAnimator {
-                duration: units.shortDuration
-                easing.type: Easing.InOutQuad
-            }
-        }
+	PlasmaCore.FrameSvgItem {
+		id: buttonPaneShadow
+		imagePath: "widgets/background"
+		enabledBorders: PlasmaCore.FrameSvgItem.RightBorder
+		width: bottomColumn.width + 16 + margins.right
+		height: parent.height
+		anchors.top: parent.top
+		x: menuShown ? 0 : -width
+		Behavior on x {
+			XAnimator {
+				duration: units.shortDuration
+				easing.type: Easing.InOutQuad
+			}
+		}
 
-        Column {
-            anchors {
-                left: parent.left
-                top: parent.top
-                margins: 8
-            }
+		Column {
+			anchors {
+				left: parent.left
+				top: parent.top
+				margins: 8
+			}
 
-            id: buttonsColumn
-            spacing: 8
+			id: buttonsColumn
+			spacing: 8
 
-            FocusButton {
-                camera: captureControls.camera
-                visible: camera.cameraStatus == Camera.ActiveStatus && camera.focus.isFocusModeSupported(Camera.FocusAuto)
-            }
+			FocusButton {
+				camera: captureControls.camera
+				visible: camera.cameraStatus == Camera.ActiveStatus && camera.focus.isFocusModeSupported(Camera.FocusAuto)
+			}
 
-            CameraPropertyButton {
-                id : wbModesButton
-                value: CameraImageProcessing.WhiteBalanceAuto
-                model: ListModel {
-                    ListElement {
-                        icon: "images/camera_auto_mode.png"
-                        value: CameraImageProcessing.WhiteBalanceAuto
-                        text: "Auto"
-                    }
-                    ListElement {
-                        icon: "images/camera_white_balance_sunny.png"
-                        value: CameraImageProcessing.WhiteBalanceSunlight
-                        text: "Sunlight"
-                    }
-                    ListElement {
-                        icon: "images/camera_white_balance_cloudy.png"
-                        value: CameraImageProcessing.WhiteBalanceCloudy
-                        text: "Cloudy"
-                    }
-                    ListElement {
-                        icon: "images/camera_white_balance_incandescent.png"
-                        value: CameraImageProcessing.WhiteBalanceTungsten
-                        text: "Tungsten"
-                    }
-                    ListElement {
-                        icon: "images/camera_white_balance_flourescent.png"
-                        value: CameraImageProcessing.WhiteBalanceFluorescent
-                        text: "Fluorescent"
-                    }
-                }
-                onValueChanged: captureControls.camera.imageProcessing.whiteBalanceMode = wbModesButton.value
-            }
+			CameraPropertyButton {
+				id : wbModesButton
+				value: CameraImageProcessing.WhiteBalanceAuto
+				model: ListModel {
+					ListElement {
+						icon: "images/camera_auto_mode.png"
+						value: CameraImageProcessing.WhiteBalanceAuto
+						text: "Auto"
+					}
+					ListElement {
+						icon: "images/camera_white_balance_sunny.png"
+						value: CameraImageProcessing.WhiteBalanceSunlight
+						text: "Sunlight"
+					}
+					ListElement {
+						icon: "images/camera_white_balance_cloudy.png"
+						value: CameraImageProcessing.WhiteBalanceCloudy
+						text: "Cloudy"
+					}
+					ListElement {
+						icon: "images/camera_white_balance_incandescent.png"
+						value: CameraImageProcessing.WhiteBalanceTungsten
+						text: "Tungsten"
+					}
+					ListElement {
+						icon: "images/camera_white_balance_flourescent.png"
+						value: CameraImageProcessing.WhiteBalanceFluorescent
+						text: "Fluorescent"
+					}
+				}
+				onValueChanged: captureControls.camera.imageProcessing.whiteBalanceMode = wbModesButton.value
+			}
 
-            CameraButton {
-                text: "View"
-                onClicked: captureControls.previewSelected()
-                visible: captureControls.previewAvailable
-            }
-        }
+			CameraButton {
+				text: "View"
+				onClicked: captureControls.previewSelected()
+				visible: captureControls.previewAvailable
+			}
+		}
 
-        Column {
-            anchors {
-                bottom: parent.bottom
-                left: parent.left
-                margins: 8
-            }
+		Column {
+			anchors {
+				bottom: parent.bottom
+				left: parent.left
+				margins: 8
+			}
 
-            id: bottomColumn
-            spacing: 8
+			id: bottomColumn
+			spacing: 8
 
-            CameraListButton {
-                model: QtMultimedia.availableCameras
-                onValueChanged: captureControls.camera.deviceId = value
-            }
+			CameraListButton {
+				model: QtMultimedia.availableCameras
+				onValueChanged: captureControls.camera.deviceId = value
+			}
 
-            CameraButton {
-                id: switchButton
-                text: "Switch to Video"
-                onClicked: captureControls.videoModeSelected()
-            }
+			CameraButton {
+				id: switchButton
+				text: "Switch to Video"
+				onClicked: captureControls.videoModeSelected()
+			}
 
-            Item {
-                width: 1
-                height: switchButton.height
-            }
-        }
+			Item {
+				width: 1
+				height: switchButton.height
+			}
+		}
+	}
 
+	CameraButton {
+		anchors {
+			margins: 8
+			horizontalCenter: parent.horizontalCenter
+			bottom: parent.bottom
+		}
+		visible: camera.imageCapture.ready
+		onClicked: camera.imageCapture.capture()
+		iconName: "camera-photo.png"
+	}
+	CameraButton {
+		z: 99
+		anchors {
+			margins: 8
+			left: parent.left
+			bottom: parent.bottom
+		}
+		onClicked: menuShown = !menuShown
+		iconName: "menu_new.png"
+	}
+	ZoomControl {
+		x : 0
+		y : 0
+		width : 100
+		height: parent.height
+		anchors {
+			right: parent.right
+		}
 
-    }
-
-    CameraButton {
-        anchors {
-            margins: 8
-            horizontalCenter: parent.horizontalCenter
-            bottom: parent.bottom
-        }
-        text: "Capture"
-        visible: camera.imageCapture.ready
-        onClicked: camera.imageCapture.capture()
-    }
-    CameraButton {
-        z: 99
-        anchors {
-            margins: 8
-            left: parent.left
-            bottom: parent.bottom
-        }
-        text: "Menu"
-        onClicked: menuShown = !menuShown
-    }
-    ZoomControl {
-        anchors {
-            top: parent.top
-            right: parent.right
-            margins: units.gridUnit
-        }
-        width : units.gridUnit
-        height: units.gridUnit * 20
-
-        currentZoom: camera.digitalZoom
-        maximumZoom: camera.maximumDigitalZoom
-        onZoomTo: camera.setDigitalZoom(value)
-    }
+		currentZoom: camera.digitalZoom
+		maximumZoom: Math.min(4.0, camera.maximumDigitalZoom)
+		onZoomTo: camera.setDigitalZoom(value)
+	}
 }
