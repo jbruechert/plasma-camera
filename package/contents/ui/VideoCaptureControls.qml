@@ -107,7 +107,9 @@ FocusScope {
 
 			CameraButton {
 				id: switchButton
+// 				iconName: "photo"
 				text: "Switch to Photo"
+                width: parent.width
 				onClicked: captureControls.photoModeSelected()
 			}
 
@@ -125,7 +127,7 @@ FocusScope {
 			bottom: parent.bottom
 		}
 		text: camera.videoRecorder.recorderStatus == CameraRecorder.RecordingStatus ? "Stop" : "Record"
-		iconName: "camera-photo.png"
+// 		iconName: "camera-photo"
 		onClicked: {
 			if (camera.videoRecorder.recorderStatus == CameraRecorder.RecordingStatus) {
 				camera.videoRecorder.stop();
@@ -143,7 +145,8 @@ FocusScope {
 			bottom: parent.bottom
 		}
 		onClicked: menuShown = !menuShown
-		iconName: "menu_new.png"
+		text: "Menu"
+// 		iconName: "menu_new"
 	}
 
 	ZoomControl {

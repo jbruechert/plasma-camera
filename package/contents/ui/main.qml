@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
+import QtQuick 2.1
 import QtMultimedia 5.4
 
 Rectangle {
@@ -47,7 +47,7 @@ Rectangle {
 	width: 1080
 	height: 1920
 
-	color: "#BBADA0"
+	color: "#2a2a2a"
 	state: "PhotoCapture"
 
 	property bool menuShown: false

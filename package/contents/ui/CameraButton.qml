@@ -39,10 +39,9 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.core 2.0 as PlasmaCore
+import QtQuick.Controls 2.0
 
-PlasmaComponents.Button {
+Button {
     width : units.gridUnit * 5
     height: units.gridUnit * 3
 }
