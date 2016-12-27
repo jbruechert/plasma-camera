@@ -47,7 +47,7 @@ Rectangle {
 	width: 1080
 	height: 1920
 
-	color: "#BBADA0"
+	// color: "#BBADA0"
 	state: "PhotoCapture"
 
 	property bool menuShown: false

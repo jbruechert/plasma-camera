@@ -107,7 +107,9 @@ FocusScope {
 
 			CameraButton {
 				id: switchButton
+				iconName: "photo"
 				text: "Switch to Photo"
+                width: parent.width
 				onClicked: captureControls.photoModeSelected()
 			}
 
@@ -143,7 +145,7 @@ FocusScope {
 			bottom: parent.bottom
 		}
 		onClicked: menuShown = !menuShown
-		iconName: "menu_new.png"
+		iconName: "menu_new"
 	}
 
 	ZoomControl {

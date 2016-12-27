@@ -139,7 +139,9 @@ FocusScope {
 
 			CameraButton {
 				id: switchButton
+				iconName: "video-mp4"
 				text: "Switch to Video"
+                width: parent.width
 				onClicked: captureControls.videoModeSelected()
 			}
 
@@ -158,7 +160,7 @@ FocusScope {
 		}
 		visible: camera.imageCapture.ready
 		onClicked: camera.imageCapture.capture()
-		iconName: "camera-photo.png"
+		iconName: "camera-photo"
 	}
 	CameraButton {
 		z: 99
@@ -168,7 +170,7 @@ FocusScope {
 			bottom: parent.bottom
 		}
 		onClicked: menuShown = !menuShown
-		iconName: "menu_new.png"
+		iconName: "menu_new"
 	}
 	ZoomControl {
 		x : 0
